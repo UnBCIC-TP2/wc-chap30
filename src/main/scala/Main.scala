@@ -4,11 +4,15 @@ import br.unb.cic.wc._
   val lines = readFile(path)
   val chunks = split(lines, 1000)
   val resMap = mapF(countFrequency)(chunks)
-  val resReduce = reduceF(Map.empty[String, Int])(joinMaps(_+_))(resMap)
-  val fw = sortAndTake(10)(resReduce)
-  println(fw)
+  reduceF(Map.empty[String, Int])(joinMaps(_+_))(showResult(10))(resMap)
+  Thread.sleep(1000)
 
 def msg = "I was compiled by Scala 3. :)"
+
+def showResult(n: Int)(wf: Map[String, Int]): Unit = {
+  val fw = sortAndTake(10)(wf)
+  println(fw)
+}
 
 def countFrequency(lines: List[String]) : Map[String, Int] = (frequencies compose removeStopWords compose scan)(lines)
 
